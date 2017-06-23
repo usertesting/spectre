@@ -43,16 +43,22 @@ group :development do
   gem 'spring'
 end
 
+group :production do
+  gem 'rails_12factor'
+end
+
 group :test do
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
-  gem 'poltergeist'
 end
 
 group :demo_test_run do
   gem 'capybara'
-  gem 'poltergeist'
   gem 'rmagick'
   gem 'rspec'
   gem 'spectre_client', git: 'https://github.com/wearefriday/spectre_client.git'
+end
+
+group :test, :demo_test_run do
+  gem 'poltergeist'
 end
