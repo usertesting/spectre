@@ -1,4 +1,5 @@
 require 'dragonfly'
+require 'dragonfly/s3_data_store'
 
 # Configure
 Dragonfly.app.configure do
@@ -8,9 +9,12 @@ Dragonfly.app.configure do
 
   url_format "/media/:job/:name"
 
-  datastore :file,
-    root_path: Rails.root.join('public/system/dragonfly', Rails.env),
-    server_root: Rails.root.join('public')
+  datastore :s3,
+    access_key_id: ENV['ACCESS_KEY_ID'],
+    secret_access_key: ENV['SECRET_ACCESS_KEY'],
+    region: 'us-west-2',
+    bucket_name: 'ut-screenshots',
+    root_path: Rails.env
 end
 
 # Logger

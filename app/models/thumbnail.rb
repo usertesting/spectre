@@ -1,8 +1,7 @@
 require 'image_size'
+require 'open-uri'
 
 class Thumbnail
-  THUMBNAIL_ROOT_PATH = "system/dragonfly/#{Rails.env}/thumbnails"
-
   def initialize(asset, key)
     @asset = asset
     @key = key
@@ -16,31 +15,51 @@ class Thumbnail
     Digest::SHA1.hexdigest(@key)
   end
 
-  def thumbnail_file_path
-    File.join(Rails.root.join('public', THUMBNAIL_ROOT_PATH), thumbnail_filename)
+  def thumbnail_path
+    File.join("thumbnails", thumbnail_filename)
+  end
+
+  def thumbnail_full_path
+    File.join(Rails.env, "thumbnails", thumbnail_filename)
   end
 
   def width
-    ImageSize.path(thumbnail_file_path).size[0]
+    get_size.first 
   end
 
   def height
-    ImageSize.path(thumbnail_file_path).size[1]
+    get_size.second
   end
 
   def url
-    file = thumbnail_file_path
-    unless File.exists?(file)
-      begin
-        create_thumbnail.to_file(file)
-      rescue Exception => e
-
-      end
+    unless exists?
+      create_thumbnail.store(path: thumbnail_path)
     end
-    "/#{THUMBNAIL_ROOT_PATH}/#{thumbnail_filename}"
+
+    s3.bucket("ut-screenshots").object(thumbnail_full_path).public_url
   end
 
   def delete
-    File.delete(thumbnail_file_path) if File.exists?(thumbnail_file_path)
+    s3.bucket("ut-screenshots").object(thumbnail_full_path).delete if exists?
+  end
+
+  private
+
+  def exists?
+    @exists ||= s3.bucket("ut-screenshots").object(thumbnail_full_path).exists?
+  end
+
+  def get_size
+    return @size if defined?(@size)
+
+    open(url) do |f|
+      @size = ImageSize.new(f).size
+    end
+
+    @size
+  end
+
+  def s3
+    @s3 ||= Aws::S3::Resource.new(region: "us-west-2", access_key_id: ENV["ACCESS_KEY_ID"], secret_access_key: ENV["SECRET_ACCESS_KEY"])
   end
 end

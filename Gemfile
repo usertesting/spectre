@@ -17,7 +17,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'rails_admin'
 gem 'sequenced'
 gem 'dragonfly', '~> 1.0.12'
+gem 'dragonfly-s3_data_store'
 gem 'image_size'
+gem 'aws-sdk'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -34,6 +36,7 @@ group :development, :test do
   gem 'rest-client'
   gem 'rspec-rails'
   gem "factory_girl_rails", "~> 4.0"
+  gem 'dotenv-rails'
 end
 
 group :development do
