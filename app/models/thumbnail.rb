@@ -24,11 +24,13 @@ class Thumbnail
   end
 
   def width
-    get_size.first 
+    100
+    # get_size.first 
   end
 
   def height
-    get_size.second
+    200
+    # get_size.second
   end
 
   def url
