@@ -22,7 +22,14 @@ class RunsController < ApplicationController
   def create
     project = Project.find_or_create_by(name: params[:project])
     suite = project.suites.find_or_create_by(name: params[:suite])
-    @run = suite.runs.create
+    sequential_id = params[:id]
+
+    @run = if sequential_id
+             suite.runs.find_or_create_by(sequential_id: sequential_id)
+            else
+              suite.runs.create
+            end
+
     render :json => @run.to_json
   end
 end
