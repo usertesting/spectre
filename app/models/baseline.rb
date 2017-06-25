@@ -8,7 +8,7 @@ class Baseline < ActiveRecord::Base
 
   def create_thumbnails
     delete_thumbnails # remove any existing thumbnail for when baselines change
-    s = screenshot_thumbnail.url
+    s = screenshot_thumbnail.create_and_store
   end
 
   def delete_thumbnails

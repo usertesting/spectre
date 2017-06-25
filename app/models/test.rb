@@ -42,9 +42,9 @@ class Test < ActiveRecord::Base
   end
 
   def create_thumbnails
-    s = screenshot_thumbnail.url unless screenshot.nil?
-    s = screenshot_baseline_thumbnail.url unless screenshot_baseline.nil?
-    s = screenshot_diff_thumbnail.url unless screenshot_diff.nil?
+    s = screenshot_thumbnail.create_and_store unless screenshot.nil?
+    s = screenshot_baseline_thumbnail.create_and_store unless screenshot_baseline.nil?
+    s = screenshot_diff_thumbnail.create_and_store unless screenshot_diff.nil?
   end
 
   def delete_thumbnails

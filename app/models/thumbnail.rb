@@ -7,7 +7,7 @@ class Thumbnail
     @key = key
   end
 
-  def create_thumbnail
+  def create
     @asset.thumb('300x').encode('jpg', '-quality 90')
   end
 
@@ -33,15 +33,19 @@ class Thumbnail
     # get_size.second
   end
 
-  def url
+  def create_and_store
     unless exists?
       begin
-        create_thumbnail.store(path: thumbnail_path)
+        create.store(path: thumbnail_path)
       rescue Dragonfly::Job::Fetch::NotFound => e
         Rails.logger.warn("#{e.class}: #{e.message}")
       end
     end
 
+    url
+  end
+
+  def url
     s3.bucket("ut-screenshots").object(thumbnail_full_path).public_url
   end
 
