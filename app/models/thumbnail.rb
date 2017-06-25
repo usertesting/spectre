@@ -35,7 +35,11 @@ class Thumbnail
 
   def url
     unless exists?
-      create_thumbnail.store(path: thumbnail_path)
+      begin
+        create_thumbnail.store(path: thumbnail_path)
+      rescue Dragonfly::Job::Fetch::NotFound => e
+        Rails.logger.warn("#{e.class}: #{e.message}")
+      end
     end
 
     s3.bucket("ut-screenshots").object(thumbnail_full_path).public_url
