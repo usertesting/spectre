@@ -20,6 +20,7 @@ gem 'dragonfly', '~> 1.0.12'
 gem 'dragonfly-s3_data_store'
 gem 'image_size'
 gem 'aws-sdk'
+gem 'sidekiq'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
