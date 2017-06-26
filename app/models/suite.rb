@@ -18,6 +18,6 @@ class Suite < ActiveRecord::Base
   end
 
   def purge_old_runs
-    self.runs.order(id: :desc).offset(5).destroy_all
+    PurgeOldRunsJob.perform_async(self.id)
   end
 end
