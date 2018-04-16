@@ -60,6 +60,8 @@ table {
 
 select {
   @include font-size('medium');
+  @include fill-content;
+  @include max-content;
 }
 
 button,
