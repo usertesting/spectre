@@ -57,3 +57,16 @@
     background-color: transparent;
   }
 }
+
+@mixin fill-content($property: width, $fallback: null) {
+  #{$property}: #{$fallback};
+  #{$property}: -webkit-fill-available;
+  #{$property}: fill-available;
+}
+
+@mixin max-content($property: max-width, $fallback: 300px) {
+  #{$property}: #{$fallback};
+  #{$property}: -webkit-max-content;
+  #{$property}: -moz-max-content;
+  #{$property}: max-content;
+}
